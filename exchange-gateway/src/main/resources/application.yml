@@ -1,0 +1,41 @@
+spring:
+  application:
+    name: exchange-gateway
+
+  cloud:
+    nacos:
+      discovery:
+#        server-addr: 192.168.0.250:8848
+        server-addr: 127.0.0.1:8848
+        namespace: 63f7ac40-3377-45ad-bd7f-8ef46ae8f685
+        register-enabled: true
+#        ip: 127.0.0.1
+#        port: 8080
+
+    gateway:
+      routes:
+        # 用户服务路由
+        - id: user-service-route
+          uri: lb://user-service
+          predicates:
+            - Path=/api/v1/users/**
+
+        # 撮合引擎路由
+        - id: matching-engine-route
+          uri: lb://matching-engine
+          predicates:
+            - Path=/api/v1/matching/**
+
+server:
+  port: 8080
+
+logging:
+  level:
+    com.exchange: DEBUG
+    org.springframework.cloud.gateway: INFO
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info

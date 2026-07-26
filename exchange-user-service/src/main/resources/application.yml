@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: user-service
+
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 192.168.0.250:8848
+        namespace: 63f7ac40-3377-45ad-bd7f-8ef46ae8f685
+        register-enabled: true
+#        ip: 127.0.0.1
+#        port: 8081
+
+server:
+  port: 8081
+
+jwt:
+  secret: exchangeSecretKey2024SecureAndLongEnough
+  expiration: 86400000
+
+logging:
+  level:
+    com.exchange: DEBUG

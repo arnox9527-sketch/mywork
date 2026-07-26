@@ -1,0 +1,38 @@
+spring:
+  application:
+    name: matching-engine
+
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+        namespace: 63f7ac40-3377-45ad-bd7f-8ef46ae8f685
+        register-enabled: true
+#        ip: 127.0.0.1
+#        port: 8082
+
+server:
+  port: 8082
+
+logging:
+  level:
+    com.exchange: DEBUG
+    com.exchange.matching: DEBUG
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+
+rocketmq:
+  name-server: 127.0.0.1:9876
+  producer:
+    group: matching-engine-producer
+    send-message-timeout: 3000
+    retry-times-when-send-failed: 2
+
+# 主题名称常量（也可以单独建一个常量类）
+mq:
+  topic:
+    trade-results: trade-results
