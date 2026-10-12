@@ -1,4 +1,4 @@
-package com.exchange.gateway.user;
+package com.exchange.user;
 
 /**
  * Hello world!

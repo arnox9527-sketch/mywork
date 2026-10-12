@@ -1,16 +1,17 @@
-package com.exchange.gateway.user;
+package com.exchange.trade;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 
-@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
+@SpringBootApplication
 @EnableDiscoveryClient
 @EnableFeignClients
-public class UserServiceApplication {
+@MapperScan("com.exchange.trade.mapper")
+public class TradeServiceApplication {
     public static void main(String[] args) {
-        SpringApplication.run(UserServiceApplication.class, args);
+        SpringApplication.run(TradeServiceApplication.class, args);
     }
 }

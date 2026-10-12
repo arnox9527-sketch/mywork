@@ -1,0 +1,43 @@
+spring:
+  application:
+    name: trade-service
+
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/exchange?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: root
+    password: root123
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+        namespace: 63f7ac40-3377-45ad-bd7f-8ef46ae8f685
+        register-enabled: true
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: true
+  global-config:
+    db-config:
+      id-type: auto
+
+server:
+  port: 8084
+
+rocketmq:
+  name-server: 127.0.0.1:9876
+  producer:
+    group: trade-service-producer
+    send-message-timeout: 3000
+    retry-times-when-send-failed: 2
+
+mq:
+  topic:
+    orders: orders
+    trade-results: trade-results
+
+logging:
+  level:
+    com.exchange: DEBUG

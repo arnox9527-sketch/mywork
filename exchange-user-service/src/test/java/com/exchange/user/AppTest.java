@@ -1,4 +1,4 @@
-package com.exchange.gateway.user;
+package com.exchange.user;
 
 import junit.framework.Test;
 import junit.framework.TestCase;

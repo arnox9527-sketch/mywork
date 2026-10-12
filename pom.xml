@@ -112,5 +112,7 @@
     <module>exchange-gateway</module>
     <module>exchange-user-service</module>
     <module>exchange-matching-engine</module>
+    <module>exchange-asset-service</module>
+    <module>exchange-trade-service</module>
   </modules>
 </project>

@@ -26,6 +26,18 @@ spring:
           predicates:
             - Path=/api/v1/matching/**
 
+        # 资产服务路由
+        - id: asset-service-route
+          uri: lb://asset-service
+          predicates:
+            - Path=/api/v1/assets/**
+
+        # 交易服务路由
+        - id: trade-service-route
+          uri: lb://trade-service
+          predicates:
+            - Path=/api/v1/trade/**
+
 server:
   port: 8080
 
