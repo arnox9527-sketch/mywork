@@ -1,11 +1,8 @@
 package com.exchange.matching.mq;
 
-import com.exchange.matching.dto.MatchResultDto;
+import com.exchange.matching.disruptor.OrderEventProducer;
 import com.exchange.matching.dto.PlaceOrderRequest;
-import com.exchange.matching.model.MatchResult;
 import com.exchange.matching.model.Order;
-import com.exchange.matching.service.MqProducerService;
-import com.exchange.matching.service.OrderBookManager;
 import com.exchange.matching.util.OrderConverter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -13,8 +10,6 @@ import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
 import org.apache.rocketmq.spring.core.RocketMQListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Slf4j
 @Component
@@ -25,10 +20,7 @@ import java.util.List;
 public class OrderMessageConsumer implements RocketMQListener<String> {
 
     @Autowired
-    private OrderBookManager orderBookManager;
-
-    @Autowired
-    private MqProducerService mqProducerService;
+    private OrderEventProducer orderEventProducer;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -42,19 +34,7 @@ public class OrderMessageConsumer implements RocketMQListener<String> {
                     request.getPrice(), request.getQuantity());
 
             Order order = OrderConverter.toOrder(request);
-            var orderBook = orderBookManager.getOrCreateOrderBook(request.getSymbol());
-            List<MatchResult> results = orderBook.processOrder(order);
-
-            if (results != null && !results.isEmpty()) {
-                for (MatchResult result : results) {
-                    MatchResultDto dto = OrderConverter.toDto(result);
-                    mqProducerService.sendMatchResult(dto);
-                }
-            }
-
-            log.info("订单撮合完成: orderId={}, status={}, filled={}, remaining={}",
-                    order.getOrderId(), order.getStatus(),
-                    order.getFilledQuantity(), order.getRemainingQuantity());
+            orderEventProducer.publish(order);
 
         } catch (Exception e) {
             log.error("处理订单消息失败: {}", e.getMessage(), e);
